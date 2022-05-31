@@ -26,12 +26,19 @@ const App = () => {
     setScores(newScores);
   }
 
+  const getBestAnecdote = () => {
+    const highestScore = scores.indexOf(Math.max(...scores));
+    return anecdotes[highestScore];
+  }
+
   return (
     <div>
       <p>{anecdotes[selected]}</p>
       <Score votes={scores[selected]} />
       <Button handleClick={addToScore} text='Vote' />
       <Button handleClick={handleSelected} text='next anecdote' />
+      <h1>Anecdote of the Day!</h1>
+      <p>{getBestAnecdote()}</p>
     </div>
   )
 };
