@@ -4,7 +4,7 @@ const Button = ({text, handleClick}) => <button onClick={handleClick}>{text}</bu
 
 const Header = ({text}) => <h1>{text}</h1>
 
-const StatisticLine = ({text, count}) => <p>{text} {count}</p>
+const StatisticLine = ({text, count}) => <tr><td>{text}</td><td>{count}</td></tr>
 
 const Statistics = ({good, neutral, bad}) => {
   const getTotal = () => good + bad + neutral;
@@ -12,24 +12,26 @@ const Statistics = ({good, neutral, bad}) => {
     return (good * 1 - bad * 1) / getTotal();
   };
   const getPositive = () => `${(good / getTotal()) * 100}%`;
-  
+
   if (getTotal() > 0) {
     return (
-      <div>
-        <StatisticLine text='good' count={good} />
-        <StatisticLine text='neutral' count={neutral} />
-        <StatisticLine text='bad' count={bad} />
-        <StatisticLine text='total' count={getTotal()} />
-        <StatisticLine text='average' count={getAverage()} />
-        <StatisticLine text='positive' count={getPositive()} />
-      </div>
-    )
+      <table>
+        <tbody>
+          <StatisticLine text='good' count={good} />
+          <StatisticLine text='neutral' count={neutral} />
+          <StatisticLine text='bad' count={bad} />
+          <StatisticLine text='total' count={getTotal()} />
+          <StatisticLine text='average' count={getAverage()} />
+          <StatisticLine text='positive' count={getPositive()} />
+        </tbody>
+      </table>
+    );
   } else {
     return (
       <p>No feedback is given</p>
-    )
+    );
   }
-}
+};
 
 const App = () => {
   const [good, setGood] = useState(0);
