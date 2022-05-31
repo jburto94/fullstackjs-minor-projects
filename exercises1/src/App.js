@@ -1,64 +1,54 @@
-const App = () => {
-  const course = {
-    name: 'Half Stack application development',
-    parts: [
-      {
-        name: 'Fundamentals of React',
-        exercises: 10
-      },
-      {
-        name: 'Using props to pass data',
-        exercises: 7
-      },
-      {
-        name: 'State of a component',
-        exercises: 14
-      }
-    ]
+import { useState } from 'react';
+
+const Button = ({text, handleClick}) => <button onClick={handleClick}>{text}</button>
+
+const Header = ({text}) => <h1>{text}</h1>
+
+const StatisticLine = ({text, count}) => <p>{text} {count}</p>
+
+const Statistics = ({good, neutral, bad}) => {
+  const getTotal = () => good + bad + neutral;
+  const getAverage = () => {
+    return (good * 1 - bad * 1) / getTotal();
   };
+  const getPositive = () => `${(good / getTotal()) * 100}%`;
+  
+  if (getTotal() > 0) {
+    return (
+      <div>
+        <StatisticLine text='good' count={good} />
+        <StatisticLine text='neutral' count={neutral} />
+        <StatisticLine text='bad' count={bad} />
+        <StatisticLine text='total' count={getTotal()} />
+        <StatisticLine text='average' count={getAverage()} />
+        <StatisticLine text='positive' count={getPositive()} />
+      </div>
+    )
+  } else {
+    return (
+      <p>No feedback is given</p>
+    )
+  }
+}
+
+const App = () => {
+  const [good, setGood] = useState(0);
+  const [neutral, setNeutral] = useState(0);
+  const [bad, setBad] = useState(0);
+
+  const handleNeutral = () => setNeutral(neutral + 1);
+  const handleGood = () => setGood(good + 1);
+  const handleBad = () => setBad(bad + 1);
 
   return (
     <div>
-      <Header course={course.name} />
-      <Content parts={course.parts} />
-      <Total parts={course.parts} />
+      <Header text='give feedback' />
+      <Button text='good' handleClick={handleGood} />
+      <Button text='neutral' handleClick={handleNeutral} />
+      <Button text='bad' handleClick={handleBad} />
+      <Header text='statistics' />
+      <Statistics good={good} neutral={neutral} bad={bad} />
     </div>
-  );
-}
-
-const Header = props => {
-  return (
-    <>
-      <h1>{props.course}</h1>
-    </>
-  );
-}
-
-const Content = props => {
-  return (
-    <>
-      <Part part={props.parts[0]} />
-      <Part part={props.parts[1]} />
-      <Part part={props.parts[2]} />
-    </>
-  );
-}
-
-const Part = props => {
-  return (
-    <>
-      <p>{props.part.name} {props.part.exercises}</p>
-    </>
-  )
-}
-
-const Total = props => {
-  let sum = 0;
-  props.parts.forEach(part => sum += part.exercises);
-  return (
-    <>
-      <p>Number of exercises {sum}</p>
-    </>
   );
 }
 
